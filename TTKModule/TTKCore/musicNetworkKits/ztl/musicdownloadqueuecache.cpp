@@ -3,13 +3,13 @@
 
 #include <QStringList>
 
-MusicDownloadQueueCache::MusicDownloadQueueCache(DownloadType type, QObject *parent)
+MusicDownloadQueueCache::MusicDownloadQueueCache(MusicObject::DownloadType  type, QObject *parent)
     : MusicDownloadQueueCache(MusicDownloadQueueData(), type, parent)
 {
 
 }
 
-MusicDownloadQueueCache::MusicDownloadQueueCache(const MusicDownloadQueueData &data, DownloadType type, QObject *parent)
+MusicDownloadQueueCache::MusicDownloadQueueCache(const MusicDownloadQueueData &data, MusicObject::DownloadType  type, QObject *parent)
     : MusicDownLoadThreadAbstract(data.m_url, data.m_savePath, type, parent)
 {
     m_request = nullptr;
@@ -21,12 +21,12 @@ MusicDownloadQueueCache::MusicDownloadQueueCache(const MusicDownloadQueueData &d
 #ifndef QT_NO_SSL
     connect(m_manager, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)), SLOT(sslErrors(QNetworkReply*,QList<QSslError>)));
     M_LOGGER_INFO(QString("%1 Support ssl: %2").arg(getClassName()).arg(QSslSocket::supportsSsl()));
-    setSslConfiguration(m_request);
+    MusicObject::setSslConfiguration(m_request);
 #endif
 
 }
 
-MusicDownloadQueueCache::MusicDownloadQueueCache(const MusicDownloadQueueDatas &datas, DownloadType type, QObject *parent)
+MusicDownloadQueueCache::MusicDownloadQueueCache(const MusicDownloadQueueDatas &datas, MusicObject::DownloadType  type, QObject *parent)
     : MusicDownloadQueueCache(MusicDownloadQueueData(), type, parent)
 {
     addImageQueue(datas);
@@ -40,11 +40,6 @@ MusicDownloadQueueCache::~MusicDownloadQueueCache()
         m_request = nullptr;
     }
     deleteAll();
-}
-
-QString MusicDownloadQueueCache::getClassName()
-{
-    return staticMetaObject.className();
 }
 
 void MusicDownloadQueueCache::startToDownload()
@@ -67,6 +62,11 @@ void MusicDownloadQueueCache::abort()
         m_reply = nullptr;
         m_isAbort = false;
     }
+}
+
+void MusicDownloadQueueCache::clear()
+{
+    m_imageQueue.clear();
 }
 
 void MusicDownloadQueueCache::addImageQueue(const MusicDownloadQueueDatas &datas)
@@ -151,7 +151,7 @@ void MusicDownloadQueueCache::errorSlot(QNetworkReply::NetworkError code)
     {
         return;
     }
-#ifndef MUSIC_DEBUG
+#ifndef TTK_DEBUG
     Q_UNUSED(code);
 #endif
     M_LOGGER_ERROR(QString("QNetworkReply::NetworkError : %1 %2").arg(code).arg(m_reply->errorString()));

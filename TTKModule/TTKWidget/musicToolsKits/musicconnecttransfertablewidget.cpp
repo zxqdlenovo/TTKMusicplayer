@@ -12,11 +12,8 @@ MusicConnectTransferTableWidget::MusicConnectTransferTableWidget(QWidget *parent
     headerview->resizeSection(0, 30);
     headerview->resizeSection(1, 280);
     headerview->resizeSection(2, 43);
-}
 
-QString MusicConnectTransferTableWidget::getClassName()
-{
-    return staticMetaObject.className();
+    connect(m_checkBoxDelegate, SIGNAL(buttonChecked()), parent->parent(), SLOT(itemSelectedChanged()));
 }
 
 void MusicConnectTransferTableWidget::createAllItems(const MusicSongs &songs)
@@ -38,7 +35,7 @@ void MusicConnectTransferTableWidget::createAllItems(const MusicSongs &songs)
         setItem(i, 1, item);
 
                 item = new QTableWidgetItem;
-        item->setToolTip(song.getMusicTime());
+        item->setToolTip(song.getMusicPlayTime());
         item->setText(MusicUtils::Widget::elidedText(font(), item->toolTip(), Qt::ElideRight, headerview->sectionSize(2) - 5));
         item->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
         setItem(i, 2, item);

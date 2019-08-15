@@ -1,6 +1,6 @@
 #include "musiclocalsongsmanagerthread.h"
 #include "musicformats.h"
-#include "musiccoreutils.h"
+#include "musicfileutils.h"
 
 MusicLocalSongsManagerThread::MusicLocalSongsManagerThread(QObject *parent)
     : QThread(parent)
@@ -13,11 +13,6 @@ MusicLocalSongsManagerThread::~MusicLocalSongsManagerThread()
     stopAndQuitThread();
 }
 
-QString MusicLocalSongsManagerThread::getClassName()
-{
-    return staticMetaObject.className();
-}
-
 void MusicLocalSongsManagerThread::run()
 {
     QFileInfoList list;
@@ -25,7 +20,7 @@ void MusicLocalSongsManagerThread::run()
     {
         if(m_run)
         {
-            list << MusicUtils::Core::getFileListByDir(path, MusicFormats::supportFormatsFilterString(), true);
+            list << MusicUtils::File::getFileListByDir(path, MusicFormats::supportFormatsFilterString(), true);
         }
     }
     ///The name and path search ended when sending the corresponding

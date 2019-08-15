@@ -7,12 +7,7 @@
 MusicDownLoadQueryBDArtistThread::MusicDownLoadQueryBDArtistThread(QObject *parent)
     : MusicDownLoadQueryArtistThread(parent)
 {
-    m_queryServer = "Baidu";
-}
-
-QString MusicDownLoadQueryBDArtistThread::getClassName()
-{
-    return staticMetaObject.className();
+    m_queryServer = QUERY_BD_INTERFACE;
 }
 
 void MusicDownLoadQueryBDArtistThread::startToSearch(const QString &artist)
@@ -23,16 +18,16 @@ void MusicDownLoadQueryBDArtistThread::startToSearch(const QString &artist)
     }
 
     M_LOGGER_INFO(QString("%1 startToSearch %2").arg(getClassName()).arg(artist));
-    QUrl musicUrl = MusicUtils::Algorithm::mdII(BD_ARTIST_URL, false).arg(artist).arg(0).arg(50);
     deleteAll();
+
+    const QUrl &musicUrl = MusicUtils::Algorithm::mdII(BD_ARTIST_URL, false).arg(artist).arg(0).arg(50);
     m_interrupt = true;
     m_searchText = artist;
 
     QNetworkRequest request;
     request.setUrl(musicUrl);
-    request.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
     request.setRawHeader("User-Agent", MusicUtils::Algorithm::mdII(BD_UA_URL_1, ALG_UA_KEY, false).toUtf8());
-    setSslConfiguration(&request);
+    MusicObject::setSslConfiguration(&request);
 
     m_reply = m_manager->get(request);
     connect(m_reply, SIGNAL(finished()), SLOT(downLoadFinished()));
@@ -54,19 +49,19 @@ void MusicDownLoadQueryBDArtistThread::downLoadFinished()
 
     if(m_reply->error() == QNetworkReply::NoError)
     {
-        QByteArray bytes = m_reply->readAll();
+        const QByteArray &bytes = m_reply->readAll();
 
         QJson::Parser parser;
         bool ok;
-        QVariant data = parser.parse(bytes, &ok);
+        const QVariant &data = parser.parse(bytes, &ok);
         if(ok)
         {
             QVariantMap value = data.toMap();
             if(value["error_code"].toInt() == 22000 && value.contains("songlist"))
             {
                 bool artistFlag = false;
-                ////////////////////////////////////////////////////////////
-                QVariantList datas = value["songlist"].toList();
+                //
+                const QVariantList &datas = value["songlist"].toList();
                 foreach(const QVariant &var, datas)
                 {
                     if(var.isNull())
@@ -91,28 +86,28 @@ void MusicDownLoadQueryBDArtistThread::downLoadFinished()
                     musicInfo.m_discNumber = "1";
                     musicInfo.m_trackNumber = value["album_no"].toString();
 
-                    if(m_interrupt || m_interrupt || !m_manager || m_stateCode != MusicNetworkAbstract::Init) return;
+                    if(m_interrupt || m_interrupt || !m_manager || m_stateCode != MusicObject::NetworkInit) return;
                     readFromMusicSongAttribute(&musicInfo, value["all_rate"].toString(), m_searchQuality, m_queryAllRecords);
-                    if(m_interrupt || m_interrupt || !m_manager || m_stateCode != MusicNetworkAbstract::Init) return;
+                    if(m_interrupt || m_interrupt || !m_manager || m_stateCode != MusicObject::NetworkInit) return;
 
                     if(musicInfo.m_songAttrs.isEmpty())
                     {
                         continue;
                     }
-                    ////////////////////////////////////////////////////////////
+                    //
                     if(!artistFlag)
                     {
                         artistFlag = true;
                         MusicResultsItem info;
-                        if(m_interrupt || m_interrupt || !m_manager || m_stateCode != MusicNetworkAbstract::Init) return;
+                        if(m_interrupt || m_interrupt || !m_manager || m_stateCode != MusicObject::NetworkInit) return;
                         getDownLoadIntro(&info);
-                        if(m_interrupt || m_interrupt || !m_manager || m_stateCode != MusicNetworkAbstract::Init) return;
+                        if(m_interrupt || m_interrupt || !m_manager || m_stateCode != MusicObject::NetworkInit) return;
                         info.m_id = m_searchText;
                         info.m_name = musicInfo.m_singerName;
                         info.m_coverUrl = musicInfo.m_smallPicUrl;
                         emit createArtistInfoItem(info);
                     }
-                    ////////////////////////////////////////////////////////////
+                    //
                     MusicSearchedItem item;
                     item.m_songName = musicInfo.m_songName;
                     item.m_singerName = musicInfo.m_singerName;
@@ -138,13 +133,12 @@ void MusicDownLoadQueryBDArtistThread::getDownLoadIntro(MusicResultsItem *item)
         return;
     }
 
-    QNetworkRequest request;
-    QUrl musicUrl = MusicUtils::Algorithm::mdII(BD_ARTIST_INFO_URL, false).arg(m_searchText);
+    const QUrl &musicUrl = MusicUtils::Algorithm::mdII(BD_ARTIST_INFO_URL, false).arg(m_searchText);
 
+    QNetworkRequest request;
     request.setUrl(musicUrl);
-    request.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
     request.setRawHeader("User-Agent", MusicUtils::Algorithm::mdII(BD_UA_URL_1, ALG_UA_KEY, false).toUtf8());
-    setSslConfiguration(&request);
+    MusicObject::setSslConfiguration(&request);
 
     MusicSemaphoreLoop loop;
     QNetworkReply *reply = m_manager->get(request);
@@ -159,14 +153,13 @@ void MusicDownLoadQueryBDArtistThread::getDownLoadIntro(MusicResultsItem *item)
 
     QJson::Parser parser;
     bool ok;
-    QVariant data = parser.parse(reply->readAll(), &ok);
+    const QVariant &data = parser.parse(reply->readAll(), &ok);
     if(ok)
     {
-        QVariantMap value = data.toMap();
+        const QVariantMap &value = data.toMap();
         item->m_tags = value["country"].toString();
         item->m_updateTime = value["birth"].toString();
         item->m_nickName = value["nickname"].toString();
         item->m_description = value["intro"].toString();
     }
-
 }

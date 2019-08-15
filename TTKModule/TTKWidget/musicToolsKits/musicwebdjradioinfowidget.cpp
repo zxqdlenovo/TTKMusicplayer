@@ -4,7 +4,6 @@
 #include "musicdownloadsourcethread.h"
 
 #include <qmath.h>
-#include <QScrollBar>
 
 MusicWebDJRadioInfoTableWidget::MusicWebDJRadioInfoTableWidget(QWidget *parent)
     : MusicQueryFoundTableWidget(parent)
@@ -15,11 +14,6 @@ MusicWebDJRadioInfoTableWidget::MusicWebDJRadioInfoTableWidget(QWidget *parent)
 MusicWebDJRadioInfoTableWidget::~MusicWebDJRadioInfoTableWidget()
 {
     clearAllItems();
-}
-
-QString MusicWebDJRadioInfoTableWidget::getClassName()
-{
-    return staticMetaObject.className();
 }
 
 void MusicWebDJRadioInfoTableWidget::setQueryInput(MusicDownLoadQueryThreadAbstract *query)
@@ -52,11 +46,6 @@ MusicWebDJRadioInfoWidget::MusicWebDJRadioInfoWidget(QWidget *parent)
     connect(v, SIGNAL(createCategoryInfoItem(MusicResultsItem)), SLOT(createCategoryInfoItem(MusicResultsItem)));
 }
 
-QString MusicWebDJRadioInfoWidget::getClassName()
-{
-    return staticMetaObject.className();
-}
-
 void MusicWebDJRadioInfoWidget::setSongName(const QString &name)
 {
     MusicFoundAbstractWidget::setSongName(name);
@@ -74,7 +63,7 @@ void MusicWebDJRadioInfoWidget::resizeWindow()
     if(!m_resizeWidgets.isEmpty())
     {
         int width = M_SETTING_PTR->value(MusicSettingManager::WidgetSize).toSize().width();
-        width = width - WINDOW_WIDTH_MIN + 390;
+            width = width - WINDOW_WIDTH_MIN + 390;
 
         QLabel *label = m_resizeWidgets[0];
         label->setText(MusicUtils::Widget::elidedText(label->font(), label->toolTip(), Qt::ElideRight, width));
@@ -105,7 +94,7 @@ void MusicWebDJRadioInfoWidget::createCategoryInfoItem(const MusicResultsItem &i
     {
         MusicDownloadSourceThread *download = new MusicDownloadSourceThread(this);
         connect(download, SIGNAL(downLoadByteDataChanged(QByteArray)), SLOT(downLoadFinished(QByteArray)));
-        if(!item.m_coverUrl.isEmpty() && item.m_coverUrl != "null")
+        if(!item.m_coverUrl.isEmpty() && item.m_coverUrl != COVER_URL_NULL)
         {
             download->startToDownload(item.m_coverUrl);
         }
@@ -158,14 +147,14 @@ void MusicWebDJRadioInfoWidget::createLabels()
     firstTopFuncLayout->addWidget(firstLabel);
     firstTopFuncLayout->addWidget(backButton);
     grid->addWidget(firstTopFuncWidget);
-    ////////////////////////////////////////////////////////////////////////////
+    //
     QWidget *topFuncWidget = new QWidget(function);
     QHBoxLayout *topFuncLayout = new QHBoxLayout(topFuncWidget);
 
     m_iconLabel = new QLabel(topFuncWidget);
     m_iconLabel->setPixmap(QPixmap(":/image/lb_warning").scaled(180, 180));
     m_iconLabel->setFixedSize(210, 180);
-    ////////////////////////////////////////////////////////////////////////////
+    //
 
     QWidget *topLineWidget = new QWidget(topFuncWidget);
     QVBoxLayout *topLineLayout = new QVBoxLayout(topLineWidget);
@@ -195,8 +184,8 @@ void MusicWebDJRadioInfoWidget::createLabels()
     topFuncLayout->addWidget(topLineWidget);
     topFuncWidget->setLayout(topFuncLayout);
     grid->addWidget(topFuncWidget);
-    ////////////////////////////////////////////////////////////////////////////
 
+    //
     QWidget *functionWidget = new QWidget(this);
     functionWidget->setStyleSheet(MusicUIObject::MPushButtonStyle03);
     QHBoxLayout *hlayout = new QHBoxLayout(functionWidget);
@@ -215,7 +204,8 @@ void MusicWebDJRadioInfoWidget::createLabels()
     m_songButton->setFocusPolicy(Qt::NoFocus);
 #endif
     grid->addWidget(functionWidget);
-    //////////////////////////////////////////////////////////////////////
+
+    //
     grid->addWidget(m_container);
     grid->addStretch(1);
 

@@ -3,7 +3,7 @@
 
 /* =================================================
  * This file is part of the TTK Music Player project
- * Copyright (C) 2015 - 2018 Greedysky Studio
+ * Copyright (C) 2015 - 2019 Greedysky Studio
 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,8 +19,8 @@
  * with this program; If not, see <http://www.gnu.org/licenses/>.
  ================================================= */
 
-#include "musicvideotablewidget.h"
 #include "musicabstractmovewidget.h"
+#include "musicvideosearchtablewidget.h"
 
 class QLabel;
 class QPushButton;
@@ -37,18 +37,14 @@ class MusicLocalSongSearchEdit;
 class MUSIC_VIDEO_EXPORT MusicVideoPlayWidget : public MusicAbstractMoveWidget
 {
     Q_OBJECT
+    TTK_DECLARE_MODULE(MusicVideoPlayWidget)
 public:
     /*!
      * Object contsructor.
      */
-    explicit MusicVideoPlayWidget(QWidget *parent = 0);
+    explicit MusicVideoPlayWidget(QWidget *parent = nullptr);
 
     ~MusicVideoPlayWidget();
-
-    /*!
-     * Get class object name.
-     */
-    static QString getClassName();
 
     /*!
      * Set the window is popup or not.
@@ -117,7 +113,7 @@ public Q_SLOTS:
     /*!
      * Set current media name and url to play.
      */
-    void mvURLNameChanged(const MusicVideoItem &item);
+    void mediaUrlNameChanged(const MusicVideoItem &item);
 
     /*!
      * Fresh button clicked.
@@ -169,7 +165,7 @@ protected:
     QStackedWidget *m_stackedWidget;
     MusicVideoItem m_videoItem;
     MusicVideoView *m_videoView;
-    MusicVideoTableWidget *m_videoTable;
+    MusicVideoSearchTableWidget *m_videoTable;
     MusicLocalSongSearchEdit *m_searchEdit;
     MusicVideoFloatWidget *m_videoFloatWidget;
 

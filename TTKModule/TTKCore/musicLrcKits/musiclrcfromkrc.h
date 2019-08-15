@@ -3,7 +3,7 @@
 
 /* =================================================
  * This file is part of the TTK Music Player project
- * Copyright (C) 2015 - 2018 Greedysky Studio
+ * Copyright (C) 2015 - 2019 Greedysky Studio
 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
  */
 class MUSIC_LRC_EXPORT MusicLrcFromKrc
 {
+    TTK_DECLARE_MODULE(MusicLrcFromKrc)
 public:
     /*!
      * Object contsructor.
@@ -33,11 +34,6 @@ public:
     MusicLrcFromKrc();
 
     ~MusicLrcFromKrc();
-
-    /*!
-     * Get class object name.
-     */
-    static QString getClassName();
 
     /*!
      * Decode krc file to lrc by input file and output file.
@@ -56,7 +52,7 @@ protected:
     /*!
      * Decompress the krc file data to normal data.
      */
-    int decompression(unsigned char *src, size_t srcsize, size_t *dstsize);
+    int decompression(uchar *src, size_t srcsize, size_t *dstsize);
     /*!
      * Check the input string is filtered or not.
      */
@@ -64,7 +60,7 @@ protected:
     /*!
      * Create lrc by input data and length.
      */
-    void createLrc(unsigned char *lrc, int lrclen);
+    void createLrc(uchar *lrc, int lrclen);
 
     uchar *m_resultBytes;
     QByteArray m_data;

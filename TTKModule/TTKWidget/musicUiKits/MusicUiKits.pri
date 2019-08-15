@@ -1,6 +1,6 @@
 # =================================================
 # * This file is part of the TTK Music Player project
-# * Copyright (C) 2015 - 2018 Greedysky Studio
+# * Copyright (C) 2015 - 2019 Greedysky Studio
 #
 # * This program is free software; you can redistribute it and/or modify
 # * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 
 INCLUDEPATH += $$PWD
 
-!contains(CONFIG, MUSIC_NO_MSVC_LINK_NEED){
+!contains(CONFIG, TTK_NO_MSVC_LINK_NEED){
 HEADERS  += \
     $$PWD/musicuiobject.h \
     $$PWD/musiccontextuiobject.h \
@@ -33,10 +33,11 @@ HEADERS  += \
     $$PWD/musictinyuiobject.h \
     $$PWD/musictoolsetsuiobject.h \
     $$PWD/musicvideofloatuiobject.h \
-    $$PWD/musicvideouiobject.h
+    $$PWD/musicvideouiobject.h \
+    $$PWD/musicwidgetheaders.h
 }
 
-contains(CONFIG, MUSIC_BUILD_LIB){
+contains(CONFIG, TTK_BUILD_LIB){
 FORMS    += \
     $$PWD/musicApplication/musicapplication.ui \
     $$PWD/musicLrcKits/musiclrcartphotouploadwidget.ui \
@@ -46,6 +47,7 @@ FORMS    += \
     $$PWD/musicLrcKits/musiclrclocallinkwidget.ui \
     $$PWD/musicLrcKits/musiclrccolorwidget.ui \
     $$PWD/musicLrcKits/musiclrcposterwidget.ui \
+    $$PWD/musicLrcKits/musiclrcdownloadbatchwidget.ui \
     $$PWD/musicToolsetsKits/musicaudiorecorderwidget.ui \
     $$PWD/musicToolsetsKits/musicdesktopwallpaperwidget.ui \
     $$PWD/musicToolsetsKits/musicfileinformationwidget.ui \
@@ -57,7 +59,6 @@ FORMS    += \
     $$PWD/musicToolsetsKits/musicsoundtouchwidget.ui \
     $$PWD/musicToolsetsKits/musicsongchecktoolswidget.ui \
     $$PWD/musicToolsetsKits/musicsongringtonemakerwidget.ui \
-    $$PWD/musicToolsetsKits/musicsongchecktoolsitemselecteddialog.ui \
     $$PWD/musicToolsetsKits/musicsoundkmicrowidget.ui \
     $$PWD/musicToolsetsKits/musicspectrumwidget.ui \
     $$PWD/musicToolsKits/musicwebmusicradioplaywidget.ui \
@@ -84,5 +85,6 @@ FORMS    += \
     $$PWD/musicWidgetKits/musicsoundeffectswidget.ui \
     $$PWD/musicWidgetKits/musicmessageaboutdialog.ui \
     $$PWD/musicWidgetKits/musicsonglistenhancelosslesswidget.ui \
-    $$PWD/musicWidgetKits/musicdownloadbatchwidget.ui
+    $$PWD/musicWidgetKits/musicdownloadbatchwidget.ui \
+    $$PWD/musicWidgetKits/musicsongitemselecteddialog.ui
 }

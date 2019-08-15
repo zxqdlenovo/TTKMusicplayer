@@ -3,7 +3,7 @@
 
 /* =================================================
  * This file is part of the TTK Music Player project
- * Copyright (C) 2015 - 2018 Greedysky Studio
+ * Copyright (C) 2015 - 2019 Greedysky Studio
 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,11 @@ class MusicSettingWidget;
  */
 typedef struct MUSIC_WIDGET_EXPORT MusicFunctionItem
 {
-    MusicFunctionItem() { }
+    MusicFunctionItem()
+    {
+
+    }
+
     MusicFunctionItem(const QString &icon, const QString &name)
     {
         m_icon = icon;
@@ -45,7 +49,7 @@ typedef struct MUSIC_WIDGET_EXPORT MusicFunctionItem
     QString m_icon;
     QString m_name;
 }MusicFunctionItem;
-MUSIC_DECLARE_LISTS(MusicFunctionItem)
+TTK_DECLARE_LISTS(MusicFunctionItem)
 
 /*! @brief The class of the list table widget.
  * @author Greedysky <greedysky@163.com>
@@ -53,16 +57,13 @@ MUSIC_DECLARE_LISTS(MusicFunctionItem)
 class MUSIC_WIDGET_EXPORT MusicFunctionTableWidget : public MusicAbstractTableWidget
 {
     Q_OBJECT
+    TTK_DECLARE_MODULE(MusicFunctionTableWidget)
 public:
     /*!
      * Object contsructor.
      */
-    explicit MusicFunctionTableWidget(QWidget *parent = 0);
+    explicit MusicFunctionTableWidget(QWidget *parent = nullptr);
 
-    /*!
-     * Get class object name.
-     */
-    static QString getClassName();
     /*!
      * Add table list items by index and icons and paths.
      */
@@ -96,6 +97,7 @@ protected:
 class MUSIC_WIDGET_EXPORT MusicSettingWidget : public MusicAbstractMoveDialog
 {
     Q_OBJECT
+    TTK_DECLARE_MODULE(MusicSettingWidget)
 public:
     enum Type
     {
@@ -106,14 +108,9 @@ public:
     /*!
      * Object contsructor.
      */
-    explicit MusicSettingWidget(QWidget *parent = 0);
+    explicit MusicSettingWidget(QWidget *parent = nullptr);
 
     virtual ~MusicSettingWidget();
-
-    /*!
-     * Get class object name.
-     */
-    static QString getClassName();
 
     /*!
      * Init controller parameter to widget.
@@ -153,6 +150,18 @@ public Q_SLOTS:
      * Version update check changed.
      */
     void otherVersionUpdateChanged();
+    /*!
+     * Ripples spectrum color changed.
+     */
+    void ripplesSpectrumColorChanged();
+    /*!
+     * Ripples spectrum opacity changed.
+     */
+    void ripplesSpectrumOpacityChanged(int value);
+    /*!
+     * Ripples spectrum opacity enable changed.
+     */
+    void ripplesSpectrumOpacityEnableClicked(bool state);
 
     /*!
      * Change to desktop lrc widget.
@@ -170,19 +179,19 @@ public Q_SLOTS:
     /*!
      * Inline lrc foreground change.
      */
-    void inlineLrcFgChanged();
+    void inlineLrcFrontgroundChanged();
     /*!
      * Inline lrc background change.
      */
-    void inlineLrcBgChanged();
+    void inlineLrcBackgroundChanged();
     /*!
      * Default lrc color change by index.
      */
-    void defaultLrcColorChanged(int index);
+    void defaultLrcColorChanged(int value);
     /*!
      * Inline lrc transparent changed by index.
      */
-    void inlineLrcTransChanged(int index);
+    void inlineLrcTransChanged(int value);
     /*!
      * Show inline lrc preview.
      */
@@ -195,19 +204,19 @@ public Q_SLOTS:
     /*!
      * Desktop lrc foreground change.
      */
-    void desktopFgChanged();
+    void desktopFrontgroundChanged();
     /*!
      * Desktop lrc background change.
      */
-    void desktopBgChanged();
+    void desktopBackgroundChanged();
     /*!
      * Default desktop lrc color change by index.
      */
-    void defaultDesktopLrcColorChanged(int index);
+    void defaultDesktopLrcColorChanged(int value);
     /*!
      * Desktop lrc transparent changed by index.
      */
-    void desktopLrcTransChanged(int index);
+    void desktopLrcTransChanged(int value);
     /*!
      * Show desktop lrc preview.
      */
@@ -256,11 +265,25 @@ public Q_SLOTS:
      */
     virtual int exec();
 
+private Q_SLOTS:
+    /*!
+     * Set scroll widget page index.
+     */
+    void setScrollWidgetPageIndex(int index);
+    /*!
+     * Scroll widget index changed.
+     */
+    void scrollWidgetValueChanged(int value);
+
 protected:
     /*!
      * Select function table index.
      */
     void selectFunctionTableIndex(int row, int col);
+    /*!
+     * Init scroll widget page widget.
+     */
+    void initScrollWidgetPage();
     /*!
      * Init normal setting stack widget.
      */
@@ -315,8 +338,6 @@ protected:
     bool setNetworkProxyByType(int type);
 
     Ui::MusicSettingWidget *m_ui;
-    QList<QColor> m_lrcSelectedFg, m_lrcSelectedBg;
-    QList<QColor> m_DlrcSelectedFg, m_DlrcSelectedBg;
 
 };
 

@@ -12,22 +12,18 @@ MusicWYAuthenticationThread::MusicWYAuthenticationThread(QObject *parent)
 
 }
 
-QString MusicWYAuthenticationThread::getClassName()
-{
-    return staticMetaObject.className();
-}
-
 void MusicWYAuthenticationThread::startToDownload(const QString &usr, const QString &pwd)
 {
+    deleteAll();
     m_interrupt = true;
 
     QNetworkRequest request;
-    if(!m_manager || m_stateCode != MusicNetworkAbstract::Init) return;
-    QByteArray parameter = makeTokenQueryUrl(&request,
-               MusicUtils::Algorithm::mdII(WY_AUT_N_URL, false),
-               MusicUtils::Algorithm::mdII(WY_AUT_NDT_URL, false).arg(usr).arg(pwd));
-    if(!m_manager || m_stateCode != MusicNetworkAbstract::Init) return;
-    setSslConfiguration(&request);
+    if(!m_manager || m_stateCode != MusicObject::NetworkInit) return;
+    const QByteArray &parameter = makeTokenQueryUrl(&request,
+                      MusicUtils::Algorithm::mdII(WY_AUT_N_URL, false),
+                      MusicUtils::Algorithm::mdII(WY_AUT_NDT_URL, false).arg(usr).arg(pwd));
+    if(!m_manager || m_stateCode != MusicObject::NetworkInit) return;
+    MusicObject::setSslConfiguration(&request);
 
     m_reply = m_manager->post(request, parameter);
     connect(m_reply, SIGNAL(finished()), SLOT(downLoadFinished()));
@@ -50,13 +46,13 @@ void MusicWYAuthenticationThread::downLoadFinished()
     {
         QJson::Parser parser;
         bool ok;
-        QVariant data = parser.parse(m_reply->readAll(), &ok);
+        const QVariant &data = parser.parse(m_reply->readAll(), &ok);
         if(ok)
         {
             QVariantMap value = data.toMap();
             if(value.contains("code") && value["code"].toInt() == 200)
             {
-                QList<QNetworkCookie> cookies = QNetworkCookie::parseCookies(m_reply->rawHeader("Set-Cookie"));
+                const QList<QNetworkCookie> &cookies = QNetworkCookie::parseCookies(m_reply->rawHeader("Set-Cookie"));
                 if(!cookies.isEmpty())
                 {
                     M_SETTING_PTR->setValue(MusicSettingManager::NetworkCookieChoiced, cookies[0].value());

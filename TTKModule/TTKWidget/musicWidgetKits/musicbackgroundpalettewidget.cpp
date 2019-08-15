@@ -6,8 +6,8 @@
 #include "musicotherdefine.h"
 #include "musiccolordialog.h"
 #include "musicuiobject.h"
+#include "musicwidgetheaders.h"
 
-#include <QGridLayout>
 #include <QMouseEvent>
 
 #define COLOR_COL  10
@@ -22,11 +22,6 @@ MusicBackgroundPalette::MusicBackgroundPalette(QWidget *parent)
 MusicBackgroundPalette::~MusicBackgroundPalette()
 {
     QFile::remove(MUSIC_COLOR_FILE);
-}
-
-QString MusicBackgroundPalette::getClassName()
-{
-    return staticMetaObject.className();
 }
 
 void MusicBackgroundPalette::setPixmap(const QColor &color)
@@ -135,7 +130,7 @@ MusicBackgroundPaletteWidget::MusicBackgroundPaletteWidget(QWidget *parent)
     colors << QColor(43, 43, 43);
     colors << QColor(37, 13, 0);
     colors << QColor(22, 22, 14);
-    /////////////////////////////////////////
+    //
     QGridLayout *layout = new QGridLayout(m_ui->mutliWidget);
     layout->setContentsMargins(0, 0, 0, 0);
     for(int i=0; i<COLOR_ROW; ++i)
@@ -184,11 +179,6 @@ MusicBackgroundPaletteWidget::~MusicBackgroundPaletteWidget()
     delete m_ui;
 }
 
-QString MusicBackgroundPaletteWidget::getClassName()
-{
-    return staticMetaObject.className();
-}
-
 void MusicBackgroundPaletteWidget::updateBackground(const QString &text)
 {
     MusicBackgroundImage image;
@@ -219,7 +209,7 @@ void MusicBackgroundPaletteWidget::paletteColorClicked()
 
 void MusicBackgroundPaletteWidget::showPaletteDialog()
 {
-    QColor paletteColor = MusicColorDialog::getColor(this);
+    const QColor &paletteColor = MusicColorDialog::getColor(this);
     if(!paletteColor.isValid())
     {
         return;

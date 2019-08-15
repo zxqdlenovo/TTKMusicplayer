@@ -3,7 +3,7 @@
 
 /* =================================================
  * This file is part of the TTK Music Player project
- * Copyright (C) 2015 - 2018 Greedysky Studio
+ * Copyright (C) 2015 - 2019 Greedysky Studio
 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
  ================================================= */
 
 #include <QVariantMap>
-#include "musicversion.h"
+#include "ttkversion.h"
 #include "musicglobaldefine.h"
 
 /*! @brief The class of source data query pdate thread.
@@ -29,16 +29,13 @@
 class MUSIC_NETWORK_EXPORT MusicSourceUpdateThread : public QObject
 {
     Q_OBJECT
+    TTK_DECLARE_MODULE(MusicSourceUpdateThread)
 public:
     /*!
      * Object contsructor.
      */
-    explicit MusicSourceUpdateThread(QObject *parent = 0);
+    explicit MusicSourceUpdateThread(QObject *parent = nullptr);
 
-    /*!
-     * Get class object name.
-     */
-    static QString getClassName();
     /*!
      * Start to download data.
      */

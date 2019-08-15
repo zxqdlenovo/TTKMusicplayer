@@ -3,7 +3,7 @@
 
 /* =================================================
  * This file is part of the TTK Music Player project
- * Copyright (C) 2015 - 2018 Greedysky Studio
+ * Copyright (C) 2015 - 2019 Greedysky Studio
 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 
 class QLabel;
 class QScrollArea;
-class MusicPlayedlist;
+class MusicPlaylist;
 class MusicSongsListPlayedTableWidget;
 
 #define PlayedPairItem(a, b) std::pair<int, int>(a, b);
@@ -37,16 +37,12 @@ typedef QList< std::pair<int, int> > PlayedPairList;
 class MUSIC_WIDGET_EXPORT MusicPlayedListTopContainerWidget : public QWidget
 {
     Q_OBJECT
+    TTK_DECLARE_MODULE(MusicPlayedListTopContainerWidget)
 public:
     /*!
      * Object contsructor.
      */
-    explicit MusicPlayedListTopContainerWidget(QWidget *parent = 0);
-
-    /*!
-     * Get class object name.
-     */
-    static QString getClassName();
+    explicit MusicPlayedListTopContainerWidget(QWidget *parent = nullptr);
 
 protected:
     /*!
@@ -63,18 +59,15 @@ protected:
 class MUSIC_WIDGET_EXPORT MusicPlayedListPopWidget : public MusicToolMenuWidget
 {
     Q_OBJECT
+    TTK_DECLARE_MODULE(MusicPlayedListPopWidget)
 public:
     /*!
      * Object contsructor.
      */
-    explicit MusicPlayedListPopWidget(QWidget *parent = 0);
+    explicit MusicPlayedListPopWidget(QWidget *parent = nullptr);
 
     virtual ~MusicPlayedListPopWidget();
 
-    /*!
-     * Get class object name.
-     */
-    static QString getClassName();
     /*!
      * Get class object instance.
      */
@@ -83,11 +76,11 @@ public:
     /*!
      * Set current play list.
      */
-    void setPlaylist(MusicPlayedlist *playlist);
+    void setPlaylist(MusicPlaylist *playlist);
     /*!
      * Get current play list.
      */
-    MusicPlayedlist *playlist() const;
+    MusicPlaylist *playlist() const;
 
     /*!
      * Clear music data list.
@@ -176,14 +169,14 @@ protected:
     /*!
      * Set play list count.
      */
-    void setPlayListCount(int count);
+    void setPlaylistCount(int count);
     /*!
      * Set play state to pause or stop.
      */
-    void setPlayEmpty();
+    void setPlaylistEmpty();
 
     QList<QLabel*> m_labels;
-    MusicPlayedlist *m_playlist;
+    MusicPlaylist *m_playlist;
     MusicSongs m_songLists;
     QScrollArea *m_scrollArea;
     MusicSongsListPlayedTableWidget *m_playedListWidget;

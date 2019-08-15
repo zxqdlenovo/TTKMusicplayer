@@ -3,7 +3,7 @@
 
 /* =================================================
  * This file is part of the TTK Music Player project
- * Copyright (C) 2015 - 2018 Greedysky Studio
+ * Copyright (C) 2015 - 2019 Greedysky Studio
 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,29 +29,21 @@ class MusicMarqueeWidget;
 class MUSIC_REMOTE_EXPORT MusicRemoteWidgetForRipples : public MusicRemoteWidget
 {
     Q_OBJECT
+    TTK_DECLARE_MODULE(MusicRemoteWidgetForRipples)
 public:
     /*!
      * Object contsructor.
      */
-    explicit MusicRemoteWidgetForRipples(QWidget *parent = 0);
+    explicit MusicRemoteWidgetForRipples(QWidget *parent = nullptr);
 
     virtual ~MusicRemoteWidgetForRipples();
 
-    /*!
-     * Get class object name.
-     */
-    static QString getClassName();
     /*!
      * Set current song text.
      */
     virtual void setLabelText(const QString &value) override;
 
 protected:
-    /*!
-     * Enable ripples control.
-     */
-    void enablePlugin(bool enable);
-
     MusicMarqueeWidget *m_songNameLabel;
 
 };

@@ -14,11 +14,6 @@ MusicRecommendFoundTableWidget::~MusicRecommendFoundTableWidget()
     clearAllItems();
 }
 
-QString MusicRecommendFoundTableWidget::getClassName()
-{
-    return staticMetaObject.className();
-}
-
 void MusicRecommendFoundTableWidget::setQueryInput(MusicDownLoadQueryThreadAbstract *query)
 {
     MusicQueryFoundTableWidget::setQueryInput(query);
@@ -45,11 +40,6 @@ MusicRecommendFoundWidget::MusicRecommendFoundWidget(QWidget *parent)
 {
     m_foundTableWidget = new MusicRecommendFoundTableWidget(this);
     m_foundTableWidget->hide();
-}
-
-QString MusicRecommendFoundWidget::getClassName()
-{
-    return staticMetaObject.className();
 }
 
 void MusicRecommendFoundWidget::setSongName(const QString &name)
@@ -103,7 +93,7 @@ void MusicRecommendFoundWidget::createLabels()
     QLabel *iconLabel = new QLabel(function);
     iconLabel->setPixmap(QPixmap(":/image/lb_recmd_daily"));
     grid->addWidget(iconLabel);
-    ////////////////////////////////////////////////////////////////////////////
+    //
     grid->addWidget(m_container);
 
     m_mainWindow->layout()->addWidget(function);

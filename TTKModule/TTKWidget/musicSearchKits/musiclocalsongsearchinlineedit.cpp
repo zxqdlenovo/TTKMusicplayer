@@ -23,11 +23,6 @@ MusicLocalSongSearchInlineEdit::~MusicLocalSongSearchInlineEdit()
     delete m_suggestThread;
 }
 
-QString MusicLocalSongSearchInlineEdit::getClassName()
-{
-    return staticMetaObject.className();
-}
-
 void MusicLocalSongSearchInlineEdit::initWidget(QWidget *parent)
 {
     setFocus(Qt::MouseFocusReason);
@@ -53,7 +48,7 @@ void MusicLocalSongSearchInlineEdit::suggestDataChanged()
     foreach(const MusicResultsItem &item, m_suggestThread->getSearchedItems())
     {
         QString value = item.m_name;
-        if(!item.m_nickName.isEmpty())
+        if(!item.m_nickName.isEmpty() && item.m_nickName != "-")
         {
             value = item.m_nickName + " - " + value;
         }

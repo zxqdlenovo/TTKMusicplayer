@@ -3,7 +3,7 @@
 
 /* =================================================
  * This file is part of the TTK Music Player project
- * Copyright (C) 2015 - 2018 Greedysky Studio
+ * Copyright (C) 2015 - 2019 Greedysky Studio
 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ typedef struct MUSIC_CORE_EXPORT MusicSkinConfigItem
     }
 
 }MusicSkinConfigItem;
-MUSIC_DECLARE_LISTS(MusicSkinConfigItem)
+TTK_DECLARE_LISTS(MusicSkinConfigItem)
 
 
 /*! @brief The class of the skin backgroud image item.
@@ -60,7 +60,7 @@ typedef struct MUSIC_CORE_EXPORT MusicBackgroundImage
     }
 
 }MusicBackgroundImage;
-MUSIC_DECLARE_LISTS(MusicBackgroundImage)
+TTK_DECLARE_LISTS(MusicBackgroundImage)
 
 
 /*! @brief The class of the skin XML Config Manager.
@@ -69,25 +69,21 @@ MUSIC_DECLARE_LISTS(MusicBackgroundImage)
 class MUSIC_CORE_EXPORT MusicSkinConfigManager : public MusicAbstractXml
 {
     Q_OBJECT
+    TTK_DECLARE_MODULE(MusicSkinConfigManager)
 public:
     /*!
      * Object contsructor.
      */
-    explicit MusicSkinConfigManager(QObject *parent = 0);
+    explicit MusicSkinConfigManager(QObject *parent = nullptr);
 
     /*!
-     * Get class object name.
+     * Read datas from config file.
      */
-    static QString getClassName();
-
+    void readSkinData(MusicSkinConfigItem &item);
     /*!
-     * Write datas into xml file.
+     * Write datas into config file.
      */
-    void writeSkinXMLConfig(const MusicSkinConfigItem &item, const QString &path);
-    /*!
-     * Read datas into xml file.
-     */
-    void readSkinXMLConfig(MusicSkinConfigItem &item);
+    void writeSkinData(const MusicSkinConfigItem &item, const QString &path);
 
 };
 

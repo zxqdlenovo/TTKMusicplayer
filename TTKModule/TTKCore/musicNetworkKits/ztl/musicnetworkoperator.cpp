@@ -4,7 +4,7 @@
 
 #include <QStringList>
 
-const QString IP_CHECK_URL = "cU5VdTY0anp2dDIyU1ZwVCtyRHlnN3ppdVMraDk2enhyMmdxaU4vOTFMQT0=";
+#define IP_CHECK_URL    "QmZadEd0V0ovaUpsMlc4MG1uSWVUUUpnenhKRFdSSTJKV0hDdlRIcE1tND0="
 
 MusicNetworkOperator::MusicNetworkOperator(QObject *parent)
     : QObject(parent)
@@ -12,20 +12,9 @@ MusicNetworkOperator::MusicNetworkOperator(QObject *parent)
 
 }
 
-MusicNetworkOperator::~MusicNetworkOperator()
-{
-
-}
-
-QString MusicNetworkOperator::getClassName()
-{
-    return staticMetaObject.className();
-}
-
 void MusicNetworkOperator::startToDownload()
 {
     MusicDownloadSourceThread *download = new MusicDownloadSourceThread(this);
-    ///Set search ip operator API
     connect(download, SIGNAL(downLoadByteDataChanged(QByteArray)), SLOT(downLoadFinished(QByteArray)));
     download->startToDownload(MusicUtils::Algorithm::mdII(IP_CHECK_URL, false));
 }
@@ -35,17 +24,17 @@ void MusicNetworkOperator::downLoadFinished(const QByteArray &data)
     QTextStream in(MConst_cast(QByteArray*, &data));
     in.setCodec("gb2312");
 
-    QString dataLine, text(in.readAll());
-    QRegExp regx(QString("<center>([^<]+)</center>"));
+    QString line, text(in.readAll());
+    QRegExp regx("<center>([^<]+)</center>");
     int pos = text.indexOf(regx);
     while(pos != -1)
     {
-        dataLine = regx.cap(0).remove("<center>").remove("</center>").trimmed();
-        dataLine = dataLine.right(2);
+        line = regx.cap(0).remove("<center>").remove("</center>").trimmed();
+        line = line.right(2);
         pos += regx.matchedLength();
         pos = regx.indexIn(text, pos);
     }
 
-    emit getNetworkOperatorFinished(dataLine);
+    emit getNetworkOperatorFinished(line);
     deleteLater();
 }

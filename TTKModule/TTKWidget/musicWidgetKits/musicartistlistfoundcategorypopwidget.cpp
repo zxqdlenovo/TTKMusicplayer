@@ -1,11 +1,9 @@
 #include "musicartistlistfoundcategorypopwidget.h"
 #include "musicclickedlabel.h"
 #include "musicuiobject.h"
+#include "musicwidgetheaders.h"
 
-#include <QLabel>
-#include <QGridLayout>
 #include <QSignalMapper>
-#include <QScrollArea>
 
 #define ITEM_MAX_COLUMN     2
 #define ITEM_LABEL_WIDTH    20
@@ -14,11 +12,6 @@ MusicArtistListFoundCategoryItem::MusicArtistListFoundCategoryItem(QWidget *pare
     : QWidget(parent)
 {
     setStyleSheet(QString());
-}
-
-QString MusicArtistListFoundCategoryItem::getClassName()
-{
-    return staticMetaObject.className();
 }
 
 void MusicArtistListFoundCategoryItem::setCategory(const MusicResultsCategory &category)
@@ -71,17 +64,12 @@ MusicArtistListFoundCategoryPopWidget::MusicArtistListFoundCategoryPopWidget(QWi
     connect(this, SIGNAL(clicked()), SLOT(popupMenu()));
 }
 
-QString MusicArtistListFoundCategoryPopWidget::getClassName()
-{
-    return staticMetaObject.className();
-}
-
 void MusicArtistListFoundCategoryPopWidget::setCategory(const QString &server, QObject *obj)
 {
     MusicResultsCategorys categorys;
     MusicCategoryConfigManager manager;
-    manager.readCategoryConfig(MusicCategoryConfigManager::ArtistList);
-    manager.readCategoryConfig(categorys, server);
+    manager.readConfig(MusicCategoryConfigManager::ArtistList);
+    manager.readCategoryData(categorys, server);
 
     QVBoxLayout *layout = new QVBoxLayout(m_containWidget);
     QWidget *containWidget = new QWidget(m_containWidget);

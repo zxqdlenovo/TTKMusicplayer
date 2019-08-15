@@ -2,17 +2,13 @@
 #include "musicsettingmanager.h"
 #include "musicdownloadmanager.h"
 #include "musicstringutils.h"
+#include "musiccoreutils.h"
 
+#include <QSslError>
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
-#include <QThread>
-#if defined Q_OS_UNIX || defined Q_CC_MINGW
-# include <unistd.h>
-#endif
-#include <QSslError>
 
-MusicDownLoadThreadAbstract::MusicDownLoadThreadAbstract(const QString &url, const QString &save,
-                                                         DownloadType type, QObject *parent)
+MusicDownLoadThreadAbstract::MusicDownLoadThreadAbstract(const QString &url, const QString &save, MusicObject::DownloadType type, QObject *parent)
     : MusicNetworkAbstract(parent)
 {
     m_url = url;
@@ -35,11 +31,6 @@ MusicDownLoadThreadAbstract::MusicDownLoadThreadAbstract(const QString &url, con
 MusicDownLoadThreadAbstract::~MusicDownLoadThreadAbstract()
 {
     M_DOWNLOAD_MANAGER_PTR->removeNetworkMultiValue(this);
-}
-
-QString MusicDownLoadThreadAbstract::getClassName()
-{
-    return staticMetaObject.className();
 }
 
 void MusicDownLoadThreadAbstract::deleteAll()
@@ -78,22 +69,16 @@ void MusicDownLoadThreadAbstract::downloadProgress(qint64 bytesReceived, qint64 
 void MusicDownLoadThreadAbstract::updateDownloadSpeed()
 {
     int delta = m_currentReceived - m_hasReceived;
-    //////////////////////////////////////
     ///limit speed
     if(M_SETTING_PTR->value(MusicSettingManager::DownloadLimitChoiced).toInt() == 0)
     {
-        int limitValue = M_SETTING_PTR->value(MusicSettingManager::DownloadDLoadLimitChoiced).toInt();
+        const int limitValue = M_SETTING_PTR->value(MusicSettingManager::DownloadDLoadLimitChoiced).toInt();
         if(limitValue != 0 && delta > limitValue*MH_KB)
         {
-#if defined Q_OS_WIN && defined MUSIC_GREATER_NEW
-            QThread::msleep(MT_S2MS - limitValue*MH_KB*MT_S2MS/delta);
-#else
-            usleep( (MT_S2MS - limitValue*MH_KB*MT_S2MS/delta)*MT_S2MS );
-#endif
+            MusicUtils::Core::sleep(MT_S2MS - limitValue*MH_KB*MT_S2MS/delta);
             delta = limitValue*MH_KB;
         }
     }
-    //////////////////////////////////////
     m_hasReceived = m_currentReceived;
 }
 
@@ -101,12 +86,12 @@ QString MusicDownLoadThreadAbstract::transferData() const
 {
     switch(m_downloadType)
     {
-        case DownloadMusic: return "DownloadMusic";
-        case DownloadLrc:   return "DownloadLrc";
-        case DownloadSmallBG: return "DownloadSmallBG";
-        case DownloadBigBG: return "DownloadBigBG";
-        case DownloadVideo: return "DownloadVideo";
-        case DownloadOther: return "DownloadOther";
+        case MusicObject::DownloadMusic: return "DownloadMusic";
+        case MusicObject::DownloadLrc:   return "DownloadLrc";
+        case MusicObject::DownloadSmallBackground: return "DownloadSmallBackground";
+        case MusicObject::DownloadBigBackground: return "DownloadBigBackground";
+        case MusicObject::DownloadVideo: return "DownloadVideo";
+        case MusicObject::DownloadOther: return "DownloadOther";
         default: return QString();
     }
 }

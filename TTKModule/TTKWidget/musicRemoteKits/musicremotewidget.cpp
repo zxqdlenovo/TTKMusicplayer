@@ -39,7 +39,7 @@ MusicRemoteWidget::MusicRemoteWidget(QWidget *parent)
     m_mainWidget->setObjectName("mainWidget");
 
     m_showMainWindow->setStyleSheet(MusicUIObject::MPushButtonStyle02);
-    m_showMainWindow->setIcon(QIcon(":/image/lb_player_logo"));
+    m_showMainWindow->setIcon(QIcon(":/image/lb_app_logo"));
     m_SettingButton->setIcon(QIcon(":/tiny/btn_setting_hover"));
 
     m_showMainWindow->setToolTip(tr("showMainWindow"));
@@ -105,11 +105,6 @@ MusicRemoteWidget::~MusicRemoteWidget()
     delete m_PlayButton;
     delete m_SettingButton;
     delete m_mainWidget;
-}
-
-QString MusicRemoteWidget::getClassName()
-{
-    return staticMetaObject.className();
 }
 
 void MusicRemoteWidget::showPlayStatus(bool status) const
@@ -222,6 +217,6 @@ void MusicRemoteWidget::contextMenuEvent(QContextMenuEvent *event)
 
 void MusicRemoteWidget::adjustPostion(QWidget *w)
 {
-    QSize windowSize = M_SETTING_PTR->value(MusicSettingManager::ScreenSize).toSize();
+    const QSize &windowSize = M_SETTING_PTR->value(MusicSettingManager::ScreenSize).toSize();
     w->move( windowSize.width() - w->width() - 150, w->height() + 70);
 }

@@ -3,7 +3,7 @@
 
 /* =================================================
  * This file is part of the TTK Music Player project
- * Copyright (C) 2015 - 2018 Greedysky Studio
+ * Copyright (C) 2015 - 2019 Greedysky Studio
 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,6 @@
 namespace MusicUIObject
 {
 ///Color
-//////////////////////////////////////////////////////
     const QString MColorStyle01 = " \
             color:white;";
 
@@ -66,9 +65,10 @@ namespace MusicUIObject
 
     const QString MColorStyle12_S = "#323232";
 
+    const QString MColorStyle13 = " \
+            color:black;";
 
 ///Background
-//////////////////////////////////////////////////////
     const QString MBackgroundStyle01 = " \
             background-color:transparent;"
 #ifdef Q_OS_UNIX
@@ -135,7 +135,6 @@ namespace MusicUIObject
 
 
 ///border
-//////////////////////////////////////////////////////
     const QString MBorderStyle01 = " \
             border:none;";
 
@@ -159,7 +158,6 @@ namespace MusicUIObject
 
 
 ///Font
-//////////////////////////////////////////////////////
     const QString MFontStyle01 = " \
             font-weight:bold;";
 
@@ -180,7 +178,6 @@ namespace MusicUIObject
 
 
 ///Custom
-//////////////////////////////////////////////////////
     const QString MCustomStyle01 = " \
             text-align:left;";
 
@@ -189,7 +186,6 @@ namespace MusicUIObject
 
 
 ///ToolButton
-//////////////////////////////////////////////////////
     const QString MToolButtonStyle01 = " \
             QToolButton{  background-color:transparent;  " +
 #ifdef Q_OS_UNIX
@@ -216,7 +212,6 @@ namespace MusicUIObject
 
 
 ///PushButton
-//////////////////////////////////////////////////////
     const QString MPushButtonStyle01 = " \
             QPushButton{ background-color:transparent;  " +
 #ifdef Q_OS_UNIX
@@ -273,7 +268,6 @@ namespace MusicUIObject
 
 
 ///RadioButton
-//////////////////////////////////////////////////////
     const QString MRadioButtonStyle01 = " \
             QRadioButton{ background-color:transparent;} \
             QRadioButton::indicator::unchecked{ image:url(:/control/btn_radioButton_unchecked);} \
@@ -288,7 +282,6 @@ namespace MusicUIObject
 
 
 ///CheckBox
-//////////////////////////////////////////////////////
     const QString MCheckBoxStyle01 = " \
             QCheckBox{ background-color:transparent;} \
             QCheckBox::indicator::unchecked{ image:url(:/control/btn_checkBox_unchecked);} \
@@ -315,7 +308,6 @@ namespace MusicUIObject
 
 
 ///ScrollBar
-//////////////////////////////////////////////////////
     const QString MScrollBarStyle01 = " \
             QScrollBar{ background:#FFFFFF; width:8px; padding-top:0px; padding-bottom:0px;} \
             QScrollBar::handle:vertical{ border-radius:4px; background:#CFCFCF; min-height: 30px;} \
@@ -343,7 +335,6 @@ namespace MusicUIObject
 
 
 ///Label
-//////////////////////////////////////////////////////
     const QString MLabelStyle01 = " \
             QLabel{ color:#888888; background-color:#FFE6E6; border:1px solid gray;}";
 
@@ -356,7 +347,6 @@ namespace MusicUIObject
 
 
 ///LineEdit
-//////////////////////////////////////////////////////
     const QString MLineEditStyle01 = " \
             QLineEdit{ font-size:12px; color:#666666; font-weight:normal; border:1px solid gray;} \
             QLineEdit::hover{ border:1px solid rgb(22, 154, 243);} \
@@ -380,7 +370,6 @@ namespace MusicUIObject
 
 
 ///Menu
-//////////////////////////////////////////////////////
     const QString MMenuStyle01 = " \
             QMenu{ padding:5px;} \
             QMenu::icon{ margin-left:10px;} \
@@ -408,7 +397,6 @@ namespace MusicUIObject
 
 
 ///Slider
-//////////////////////////////////////////////////////
     const QString MSliderStyle01 = " \
             QSlider::groove:horizontal{ \
             background:#FFFEA1; height:3px; border-radius:1px;} \
@@ -478,7 +466,6 @@ namespace MusicUIObject
 
 
 ///ComboBox
-//////////////////////////////////////////////////////
     const QString MComboBoxStyle01 = " \
             QComboBox{ border: 1px solid gray;} \
             QComboBox::hover{ border: 1px solid rgb(22, 154, 243);} \
@@ -496,7 +483,6 @@ namespace MusicUIObject
 
 
 ///TableWidget
-//////////////////////////////////////////////////////
     const QString MTableWidgetStyle01 = " \
             QTableWidget{ selection-background-color:rgba(20, 20, 20, 20);}";
 
@@ -511,7 +497,6 @@ namespace MusicUIObject
 
 
 ///TableWidget
-//////////////////////////////////////////////////////
     const QString MTabWidgetStyle01 = " \
         QTabWidget{ border:none;} \
         QTabBar::tab{ height:30px; width:125px; background-color:#BFBFBF; color:white;} \
@@ -519,7 +504,6 @@ namespace MusicUIObject
 
 
 ///TextEdit
-//////////////////////////////////////////////////////
     const QString MTextEditStyle01 = " \
             QTextEdit{ border:1px solid gray; color:#666666;} \
             QTextEdit::hover{ border:1px solid rgb(22, 154, 243);} \
@@ -527,13 +511,11 @@ namespace MusicUIObject
 
 
 ///Widget
-//////////////////////////////////////////////////////
     const QString MWidgetStyle01 = " \
             QWidget{ background:rgba(255, 255, 255, 50); color:white; font-weight:bold;}";
 
 
 ///DateEdit
-//////////////////////////////////////////////////////
     const QString MDateEditStyle01 = " \
             QDateEdit{ font-size:12px; color:#666666; font-weight:normal; border: 1px solid gray;} \
             QDateEdit::hover{ border:1px solid rgb(22, 154, 243);} \
@@ -543,7 +525,6 @@ namespace MusicUIObject
 
 
 ///SpinBox
-//////////////////////////////////////////////////////
     const QString MSpinBoxStyle01 = " \
             QSpinBox{ font-size:12px; color:#666666; font-weight:normal; border: 1px solid gray;} \
             QSpinBoxt::hover{ border:1px solid rgb(22, 154, 243);} \
@@ -553,7 +534,6 @@ namespace MusicUIObject
 
 
 ///ProgressBar
-//////////////////////////////////////////////////////
     const QString MProgressBar01 = " \
             QProgressBar{ border:none; background:rgb(210, 225, 240); text-align:center;} \
             QProgressBar::chunk{ background:rgb(60, 140, 220);}";
@@ -564,7 +544,6 @@ namespace MusicUIObject
 
 
 ///ItemView
-//////////////////////////////////////////////////////
     const QString MItemView01 = " \
             QAbstractItemView::item { height:20px; }";
 

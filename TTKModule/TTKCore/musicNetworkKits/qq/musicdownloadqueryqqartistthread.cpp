@@ -12,37 +12,32 @@ MusicQQArtistInfoConfigManager::MusicQQArtistInfoConfigManager(QObject *parent)
 
 }
 
-QString MusicQQArtistInfoConfigManager::getClassName()
+void MusicQQArtistInfoConfigManager::readArtistInfoData(MusicResultsItem *item)
 {
-    return staticMetaObject.className();
-}
-
-void MusicQQArtistInfoConfigManager::readArtistInfoConfig(MusicResultsItem *item)
-{
-    QDomNodeList resultlist = m_document->elementsByTagName("info");
+    const QDomNodeList &resultlist = m_document->elementsByTagName("info");
     for(int i=0; i<resultlist.count(); ++i)
     {
-        QDomNodeList infolist = resultlist.at(i).childNodes();
+        const QDomNodeList &infolist = resultlist.at(i).childNodes();
         for(int j=0; j<infolist.count(); ++j)
         {
-            QDomNode node = infolist.at(j);
+            const QDomNode &node = infolist.at(j);
             if(node.nodeName() == "desc")
             {
                 item->m_description = node.toElement().text();
             }
             else if(node.nodeName() == "basic")
             {
-                QDomNodeList basiclist = node.childNodes();
+                const QDomNodeList &basiclist = node.childNodes();
                 for(int k=0; k<basiclist.count(); ++k)
                 {
-                    QDomNodeList itemlist = basiclist.at(k).childNodes();
+                    const QDomNodeList &itemlist = basiclist.at(k).childNodes();
                     if(itemlist.count() != 2)
                     {
                         continue;
                     }
 
-                    QString key = itemlist.at(0).toElement().text();
-                    QString value = itemlist.at(1).toElement().text();
+                    const QString &key = itemlist.at(0).toElement().text();
+                    const QString &value = itemlist.at(1).toElement().text();
                     if(key.contains("\u4e2d\u6587\u540d"))
                         item->m_nickName = value;
                     else if(key.contains("\u51fa\u751f\u65e5\u671f"))
@@ -53,10 +48,10 @@ void MusicQQArtistInfoConfigManager::readArtistInfoConfig(MusicResultsItem *item
             }
             else if(node.nodeName() == "other")
             {
-                QDomNodeList otherlist = node.childNodes();
+                const QDomNodeList &otherlist = node.childNodes();
                 for(int k=0; k<otherlist.count(); ++k)
                 {
-                    QDomNodeList itemlist = otherlist.at(k).childNodes();
+                    const QDomNodeList &itemlist = otherlist.at(k).childNodes();
                     if(itemlist.count() != 2)
                     {
                         continue;
@@ -75,12 +70,7 @@ void MusicQQArtistInfoConfigManager::readArtistInfoConfig(MusicResultsItem *item
 MusicDownLoadQueryQQArtistThread::MusicDownLoadQueryQQArtistThread(QObject *parent)
     : MusicDownLoadQueryArtistThread(parent)
 {
-    m_queryServer = "QQ";
-}
-
-QString MusicDownLoadQueryQQArtistThread::getClassName()
-{
-    return staticMetaObject.className();
+    m_queryServer = QUERY_QQ_INTERFACE;
 }
 
 void MusicDownLoadQueryQQArtistThread::startToSearch(const QString &artist)
@@ -91,16 +81,16 @@ void MusicDownLoadQueryQQArtistThread::startToSearch(const QString &artist)
     }
 
     M_LOGGER_INFO(QString("%1 startToSearch %2").arg(getClassName()).arg(artist));
-    QUrl musicUrl = MusicUtils::Algorithm::mdII(QQ_ARTIST_URL, false).arg(artist).arg(0).arg(50);
     deleteAll();
+
+    const QUrl &musicUrl = MusicUtils::Algorithm::mdII(QQ_ARTIST_URL, false).arg(artist).arg(0).arg(50);
     m_searchText = artist;
     m_interrupt = true;
 
     QNetworkRequest request;
     request.setUrl(musicUrl);
-    request.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
     request.setRawHeader("User-Agent", MusicUtils::Algorithm::mdII(QQ_UA_URL_1, ALG_UA_KEY, false).toUtf8());
-    setSslConfiguration(&request);
+    MusicObject::setSslConfiguration(&request);
 
     m_reply = m_manager->get(request);
     connect(m_reply, SIGNAL(finished()), SLOT(downLoadFinished()));
@@ -122,20 +112,20 @@ void MusicDownLoadQueryQQArtistThread::downLoadFinished()
 
     if(m_reply->error() == QNetworkReply::NoError)
     {
-        QByteArray bytes = m_reply->readAll();
+        const QByteArray &bytes = m_reply->readAll();
 
         QJson::Parser parser;
         bool ok;
-        QVariant data = parser.parse(bytes, &ok);
+        const QVariant &data = parser.parse(bytes, &ok);
         if(ok)
         {
             QVariantMap value = data.toMap();
             if(value.contains("data"))
             {
                 bool artistFlag = false;
-                ////////////////////////////////////////////////////////////
+                //
                 value = value["data"].toMap();
-                QVariantList datas = value["list"].toList();
+                const QVariantList &datas = value["list"].toList();
                 foreach(const QVariant &var, datas)
                 {
                     if(var.isNull())
@@ -152,7 +142,7 @@ void MusicDownLoadQueryQQArtistThread::downLoadFinished()
                         {
                             continue;
                         }
-                        QVariantMap name = var.toMap();
+                        const QVariantMap &name = var.toMap();
                         musicInfo.m_singerName = MusicUtils::String::illegalCharactersReplaced(name["name"].toString());
                         musicInfo.m_artistId = name["mid"].toString();
                     }
@@ -164,36 +154,36 @@ void MusicDownLoadQueryQQArtistThread::downLoadFinished()
                     musicInfo.m_albumId = value["albummid"].toString();
                     musicInfo.m_lrcUrl = MusicUtils::Algorithm::mdII(QQ_SONG_LRC_URL, false).arg(musicInfo.m_songId);
                     musicInfo.m_smallPicUrl = MusicUtils::Algorithm::mdII(QQ_SONG_PIC_URL, false)
-                                .arg(musicInfo.m_albumId.right(2).left(1))
-                                .arg(musicInfo.m_albumId.right(1)).arg(musicInfo.m_albumId);
+                                              .arg(musicInfo.m_albumId.right(2).left(1))
+                                              .arg(musicInfo.m_albumId.right(1)).arg(musicInfo.m_albumId);
                     musicInfo.m_albumName = MusicUtils::String::illegalCharactersReplaced(value["albumname"].toString());
 
                     musicInfo.m_year = QString();
                     musicInfo.m_discNumber = value["cdIdx"].toString();
                     musicInfo.m_trackNumber = value["belongCD"].toString();
 
-                    if(m_interrupt || !m_manager || m_stateCode != MusicNetworkAbstract::Init) return;
+                    if(m_interrupt || !m_manager || m_stateCode != MusicObject::NetworkInit) return;
                     readFromMusicSongAttribute(&musicInfo, value, m_searchQuality, m_queryAllRecords);
-                    if(m_interrupt || !m_manager || m_stateCode != MusicNetworkAbstract::Init) return;
+                    if(m_interrupt || !m_manager || m_stateCode != MusicObject::NetworkInit) return;
 
                     if(musicInfo.m_songAttrs.isEmpty())
                     {
                         continue;
                     }
-                    ////////////////////////////////////////////////////////////
+                    //
                     if(!artistFlag)
                     {
                         artistFlag = true;
                         MusicResultsItem info;
-                        if(m_interrupt || !m_manager || m_stateCode != MusicNetworkAbstract::Init) return;
+                        if(m_interrupt || !m_manager || m_stateCode != MusicObject::NetworkInit) return;
                         getDownLoadIntro(&info);
-                        if(m_interrupt || !m_manager || m_stateCode != MusicNetworkAbstract::Init) return;
+                        if(m_interrupt || !m_manager || m_stateCode != MusicObject::NetworkInit) return;
                         info.m_id = musicInfo.m_artistId;
                         info.m_name = musicInfo.m_singerName;
                         info.m_coverUrl = musicInfo.m_smallPicUrl;
                         emit createArtistInfoItem(info);
                     }
-                    ////////////////////////////////////////////////////////////
+                    //
                     MusicSearchedItem item;
                     item.m_songName = musicInfo.m_songName;
                     item.m_singerName = musicInfo.m_singerName;
@@ -220,13 +210,12 @@ void MusicDownLoadQueryQQArtistThread::getDownLoadIntro(MusicResultsItem *item)
     }
 
     QNetworkRequest request;
-    QUrl musicUrl = MusicUtils::Algorithm::mdII(QQ_ARTIST_INFO_URL, false).arg(m_searchText);
+    const QUrl &musicUrl = MusicUtils::Algorithm::mdII(QQ_ARTIST_INFO_URL, false).arg(m_searchText);
 
     request.setUrl(musicUrl);
-    request.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
     request.setRawHeader("Referer", MusicUtils::Algorithm::mdII(REFER_URL, false).toUtf8());
     request.setRawHeader("User-Agent", MusicUtils::Algorithm::mdII(QQ_UA_URL_1, ALG_UA_KEY, false).toUtf8());
-    setSslConfiguration(&request);
+    MusicObject::setSslConfiguration(&request);
 
     MusicSemaphoreLoop loop;
     QNetworkReply *reply = m_manager->get(request);
@@ -241,6 +230,6 @@ void MusicDownLoadQueryQQArtistThread::getDownLoadIntro(MusicResultsItem *item)
 
     MusicQQArtistInfoConfigManager xml;
     xml.fromByteArray(reply->readAll());
-    xml.readArtistInfoConfig(item);
+    xml.readArtistInfoData(item);
 
 }

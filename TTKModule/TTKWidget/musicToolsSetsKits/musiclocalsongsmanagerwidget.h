@@ -3,7 +3,7 @@
 
 /* =================================================
  * This file is part of the TTK Music Player project
- * Copyright (C) 2015 - 2018 Greedysky Studio
+ * Copyright (C) 2015 - 2019 Greedysky Studio
 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,14 +19,13 @@
  * with this program; If not, see <http://www.gnu.org/licenses/>.
  ================================================= */
 
-#include <QDialog>
+#include <QFileInfo>
 #include <QMouseEvent>
 #include "musicobject.h"
 #include "musicuiobject.h"
+#include "musicwidgetheaders.h"
 #include "musicabstractmovewidget.h"
-#include <QFileInfo>
 
-class QFileSystemWatcher;
 class MusicLocalSongsManagerThread;
 
 namespace Ui {
@@ -39,18 +38,14 @@ class MusicLocalSongsManagerWidget;
 class MUSIC_TOOLSET_EXPORT MusicLocalSongsManagerWidget : public MusicAbstractMoveWidget
 {
     Q_OBJECT
+    TTK_DECLARE_MODULE(MusicLocalSongsManagerWidget)
 public:
     /*!
      * Object contsructor.
      */
-    explicit MusicLocalSongsManagerWidget(QWidget *parent = 0);
+    explicit MusicLocalSongsManagerWidget(QWidget *parent = nullptr);
 
     virtual ~MusicLocalSongsManagerWidget();
-
-    /*!
-     * Get class object name.
-     */
-    static QString getClassName();
 
     /*!
      * Find extra device path.
@@ -58,10 +53,6 @@ public:
     void findExtraDevicePath(const QString &dir);
 
 Q_SIGNALS:
-    /*!
-     * Reset window open flag.
-     */
-    void resetFlag(MusicObject::ToolsType flag);
     /*!
      * Add current selected song to play lists.
      */
@@ -72,18 +63,6 @@ public Q_SLOTS:
      * Select all items.
      */
     void selectedAllItems(bool check);
-    /*!
-     * Watch dir enable or not.
-     */
-    void watchDirEnable(bool enable);
-    /*!
-     * Watch dir selected.
-     */
-    void watchDirSelected();
-    /*!
-     * Watch dir path changed.
-     */
-    void watchDirChanged(const QString &path);
     /*!
      * Music song audition play.
      */
@@ -136,10 +115,6 @@ public Q_SLOTS:
 
 protected:
     /*!
-     * Override the widget event.
-     */
-    virtual void closeEvent(QCloseEvent *event) override;
-    /*!
      * Clear All Items.
      */
     void clearAllItems();
@@ -176,8 +151,7 @@ protected:
     Ui::MusicLocalSongsManagerWidget *m_ui;
     QFileInfoList m_fileNames;
     MusicLocalSongsManagerThread *m_thread;
-    MusicObject::MIntsListMap m_searchfileListCache;
-    QFileSystemWatcher *m_fileSystemWatcher;
+    MIntListMap m_searchfileListCache;
 
 };
 

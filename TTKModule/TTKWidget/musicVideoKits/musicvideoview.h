@@ -3,7 +3,7 @@
 
 /* =================================================
  * This file is part of the TTK Music Player project
- * Copyright (C) 2015 - 2018 Greedysky Studio
+ * Copyright (C) 2015 - 2019 Greedysky Studio
 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,17 +32,13 @@ class MusicBarrageWidget;
 class MUSIC_VIDEO_EXPORT MusicViewWidget : public QWidget
 {
     Q_OBJECT
+    TTK_DECLARE_MODULE(MusicViewWidget)
 public:
     /*!
      * Object contsructor.
      */
-    explicit MusicViewWidget(QWidget *parent = 0);
+    explicit MusicViewWidget(QWidget *parent = nullptr);
     ~MusicViewWidget();
-
-    /*!
-     * Get class object name.
-     */
-    static QString getClassName();
 
 Q_SIGNALS:
     /*!
@@ -77,18 +73,15 @@ protected:
 class MUSIC_VIDEO_EXPORT MusicVideoView : public QAbstractScrollArea
 {
     Q_OBJECT
+    TTK_DECLARE_MODULE(MusicVideoView)
 public:
     /*!
      * Object contsructor.
      */
-    explicit MusicVideoView(QWidget *parent = 0);
+    explicit MusicVideoView(QWidget *parent = nullptr);
 
     ~MusicVideoView();
 
-    /*!
-     * Get class object name.
-     */
-    static QString getClassName();
     /*!
      * Set video play data.
      */

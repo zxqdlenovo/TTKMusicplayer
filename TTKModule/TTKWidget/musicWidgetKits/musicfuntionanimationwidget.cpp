@@ -3,12 +3,11 @@
 #include "musicfunctionlistuiobject.h"
 #include "musicwidgetutils.h"
 #include "musicuiobject.h"
+#include "musicwidgetheaders.h"
 
 #include "qmath.h"
 
 #include <QPainter>
-#include <QBoxLayout>
-#include <QToolButton>
 #include <QButtonGroup>
 #include <QPropertyAnimation>
 
@@ -16,11 +15,6 @@ MusicBackgroundWidget::MusicBackgroundWidget(QWidget *parent)
     : QWidget(parent)
 {
 
-}
-
-QString MusicBackgroundWidget::getClassName()
-{
-    return staticMetaObject.className();
 }
 
 void MusicBackgroundWidget::setTransparent(int alpha)
@@ -31,11 +25,10 @@ void MusicBackgroundWidget::setTransparent(int alpha)
 
 void MusicBackgroundWidget::paintEvent(QPaintEvent *event)
 {
+    QWidget::paintEvent(event);
+
     QPainter painter(this);
     painter.fillRect(rect(), QColor(255, 255, 255, m_backgroundAlpha));
-    painter.end();
-
-    QWidget::paintEvent(event);
 }
 
 
@@ -44,11 +37,6 @@ MusicLineBackgroundWidget::MusicLineBackgroundWidget(QWidget *parent)
     : QWidget(parent)
 {
     m_transparent = false;
-}
-
-QString MusicLineBackgroundWidget::getClassName()
-{
-    return staticMetaObject.className();
 }
 
 void MusicLineBackgroundWidget::transparent(bool state)
@@ -110,11 +98,6 @@ MusicBaseAnimationWidget::~MusicBaseAnimationWidget()
     delete m_group;
 }
 
-QString MusicBaseAnimationWidget::getClassName()
-{
-    return staticMetaObject.className();
-}
-
 void MusicBaseAnimationWidget::paintEvent(QPaintEvent *event)
 {
     QWidget::paintEvent(event);
@@ -128,7 +111,7 @@ void MusicBaseAnimationWidget::paintEvent(QPaintEvent *event)
         painter.setPen(QPen(QBrush(QColor(0, 0, 0)), 0.1, Qt::SolidLine));
 
         int offset =  m_perWidth - (m_container[0]->width() + m_pix.width()) / 2;
-        offset = m_isAnimation ? (offset + m_x) : (offset + m_curIndex * m_perWidth);
+            offset = m_isAnimation ? (offset + m_x) : (offset + m_curIndex * m_perWidth);
         if(m_showLine)
         {
             painter.drawLine(0, height(), offset, height());
@@ -169,24 +152,19 @@ MusicFuntionAnimationWidget::MusicFuntionAnimationWidget(QWidget *parent)
     QHBoxLayout *ly = MStatic_cast(QHBoxLayout*, layout());
 
     QStringList names;
-    names << tr("musicPlaylist") << tr("musicCloud") << tr("musicRadio")
-          << tr("musicMobile") << tr("musicMydownl");
+    names << tr("musicPlaylist") << tr("musicCloud") << tr("musicRadio") << tr("musicMobile") << tr("musicMydownl");
     for(int i=0; i<names.count(); ++i)
     {
         QToolButton *btn = new QToolButton(this);
         btn->setToolTip(names[i]);
         btn->setFixedSize(20, 20);
+        btn->setCursor(Qt::PointingHandCursor);
         ly->addWidget(btn);
         m_group->addButton(btn, i);
         m_container << btn;
     }
 
     switchToSelectedItemStyle(0);
-}
-
-QString MusicFuntionAnimationWidget::getClassName()
-{
-    return staticMetaObject.className();
 }
 
 void MusicFuntionAnimationWidget::paintEvent(QPaintEvent *event)
@@ -231,17 +209,13 @@ MusicOptionAnimationWidget::MusicOptionAnimationWidget(QWidget *parent)
     {
         QToolButton *btn = new QToolButton(this);
         btn->setFixedSize(54, 23);
+        btn->setCursor(Qt::PointingHandCursor);
         ly->addWidget(btn);
         m_group->addButton(btn, i);
         m_container << btn;
     }
 
     switchToSelectedItemStyle(0);
-}
-
-QString MusicOptionAnimationWidget::getClassName()
-{
-    return staticMetaObject.className();
 }
 
 void MusicOptionAnimationWidget::musicButtonStyleClear(bool fore)
@@ -295,6 +269,7 @@ MusicSkinAnimationWidget::MusicSkinAnimationWidget(QWidget *parent)
         QToolButton *btn = new QToolButton(this);
         btn->setText(names[i]);
         btn->setFixedSize(80, 30);
+        btn->setCursor(Qt::PointingHandCursor);
         ly->addWidget(btn);
         m_group->addButton(btn, i);
         m_container << btn;
@@ -302,11 +277,6 @@ MusicSkinAnimationWidget::MusicSkinAnimationWidget(QWidget *parent)
     ly->addStretch(1);
 
     switchToSelectedItemStyle(0);
-}
-
-QString MusicSkinAnimationWidget::getClassName()
-{
-    return staticMetaObject.className();
 }
 
 void MusicSkinAnimationWidget::paintEvent(QPaintEvent *event)

@@ -8,13 +8,8 @@ MusicDownLoadQueryXMArtistListThread::MusicDownLoadQueryXMArtistListThread(QObje
     : MusicDownLoadQueryArtistListThread(parent)
 {
     m_pageSize = 100;
-    m_pageTotal = DEFAULT_LEVEL4;
-    m_queryServer = "XiaMi";
-}
-
-QString MusicDownLoadQueryXMArtistListThread::getClassName()
-{
-    return staticMetaObject.className();
+    m_pageTotal = DEFAULT_LEVEL_HIGHER;
+    m_queryServer = QUERY_XM_INTERFACE;
 }
 
 void MusicDownLoadQueryXMArtistListThread::startToPage(int offset)
@@ -25,8 +20,10 @@ void MusicDownLoadQueryXMArtistListThread::startToPage(int offset)
     }
 
     M_LOGGER_INFO(QString("%1 startToPage %2").arg(getClassName()).arg(offset));
+    deleteAll();
+
     QString catId = "class=1&type=1";
-    QStringList dds = m_searchText.split(STRING_SPLITER);
+    const QStringList &dds = m_searchText.split(TTK_STR_SPLITER);
     if(dds.count() == 2)
     {
         catId = dds[0];
@@ -35,17 +32,14 @@ void MusicDownLoadQueryXMArtistListThread::startToPage(int offset)
             catId = "class=1&type=1";
         }
     }
-    QUrl musicUrl = MusicUtils::Algorithm::mdII(XM_AR_LIST_URL, false).arg(catId).arg(offset).arg(m_pageSize);
-
-    deleteAll();
+    const QUrl &musicUrl = MusicUtils::Algorithm::mdII(XM_AR_LIST_URL, false).arg(catId).arg(offset).arg(m_pageSize);
     m_interrupt = true;
 
     QNetworkRequest request;
     request.setUrl(musicUrl);
-    request.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
     request.setRawHeader("Referer", MusicUtils::Algorithm::mdII(REFER_URL, false).toUtf8());
     request.setRawHeader("User-Agent", MusicUtils::Algorithm::mdII(XM_UA_URL_1, ALG_UA_KEY, false).toUtf8());
-    setSslConfiguration(&request);
+    MusicObject::setSslConfiguration(&request);
 
     m_reply = m_manager->get(request);
     connect(m_reply, SIGNAL(finished()), SLOT(downLoadFinished()));
@@ -74,18 +68,18 @@ void MusicDownLoadQueryXMArtistListThread::downLoadFinished()
 
     if(m_reply->error() == QNetworkReply::NoError)
     {
-        QByteArray bytes = m_reply->readAll();
+        const QByteArray &bytes = m_reply->readAll();
 
         QJson::Parser parser;
         bool ok;
-        QVariant data = parser.parse(bytes, &ok);
+        const QVariant &data = parser.parse(bytes, &ok);
         if(ok)
         {
             QVariantMap value = data.toMap();
             if(value.contains("data") && value["state"].toInt() == 0)
             {
                 value = value["data"].toMap();
-                QVariantList datas = value["artists"].toList();
+                const QVariantList &datas = value["artists"].toList();
                 foreach(const QVariant &var, datas)
                 {
                     if(m_interrupt) return;

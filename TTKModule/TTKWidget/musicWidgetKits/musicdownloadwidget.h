@@ -3,7 +3,7 @@
 
 /* =================================================
  * This file is part of the TTK Music Player project
- * Copyright (C) 2015 - 2018 Greedysky Studio
+ * Copyright (C) 2015 - 2019 Greedysky Studio
 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,6 @@
 #include "musicabstractmovewidget.h"
 #include "musicabstracttablewidget.h"
 #include "musicdownloadquerythreadabstract.h"
-
-#define ROW_HEIGHT  25
 
 namespace Ui {
 class MusicDownloadWidget;
@@ -71,18 +69,15 @@ typedef struct MUSIC_WIDGET_EXPORT MusicDownloadTableItemRole
 class MUSIC_WIDGET_EXPORT MusicDownloadTableItem : public QWidget
 {
     Q_OBJECT
+    TTK_DECLARE_MODULE(MusicDownloadTableItem)
 public:
     /*!
      * Object contsructor.
      */
-    explicit MusicDownloadTableItem(QWidget *parent = 0);
+    explicit MusicDownloadTableItem(QWidget *parent = nullptr);
 
     ~MusicDownloadTableItem();
 
-    /*!
-     * Get class object name.
-     */
-    static QString getClassName();
     /*!
      * Set current item icon.
      */
@@ -108,18 +103,15 @@ protected:
 class MUSIC_WIDGET_EXPORT MusicDownloadTableWidget : public MusicAbstractTableWidget
 {
     Q_OBJECT
+    TTK_DECLARE_MODULE(MusicDownloadTableWidget)
 public:
     /*!
      * Object contsructor.
      */
-    explicit MusicDownloadTableWidget(QWidget *parent = 0);
+    explicit MusicDownloadTableWidget(QWidget *parent = nullptr);
 
     virtual ~MusicDownloadTableWidget();
 
-    /*!
-     * Get class object name.
-     */
-    static QString getClassName();
     /*!
      * Clear All Items.
      */
@@ -150,18 +142,15 @@ protected:
 class MUSIC_WIDGET_EXPORT MusicDownloadWidget : public MusicAbstractMoveWidget
 {
     Q_OBJECT
+    TTK_DECLARE_MODULE(MusicDownloadWidget)
 public:
     /*!
      * Object contsructor.
      */
-    explicit MusicDownloadWidget(QWidget *parent = 0);
+    explicit MusicDownloadWidget(QWidget *parent = nullptr);
 
     virtual ~MusicDownloadWidget();
 
-    /*!
-     * Get class object name.
-     */
-    static QString getClassName();
     /*!
      * Set current name to search and download musics.
      */

@@ -5,10 +5,9 @@
 #include "musicgiflabelwidget.h"
 #include "musicleftareawidget.h"
 #include "musicnumberdefine.h"
+#include "musicwidgetheaders.h"
 
-#include <QMenu>
 #include <QTimer>
-#include <QPushButton>
 
 MusicSongsListPlayedWidget::MusicSongsListPlayedWidget(int index, QWidget *parent)
     : QWidget(parent), m_parentClass(parent)
@@ -71,11 +70,6 @@ MusicSongsListPlayedWidget::~MusicSongsListPlayedWidget()
     delete m_moreButton;
 }
 
-QString MusicSongsListPlayedWidget::getClassName()
-{
-    return staticMetaObject.className();
-}
-
 void MusicSongsListPlayedWidget::setParameter(const QString &name)
 {
     m_textLabel->setText(MusicUtils::Widget::elidedText(font(), name, Qt::ElideRight, 168));
@@ -101,9 +95,6 @@ void MusicSongsListPlayedWidget::createMoreMenu(QMenu *menu)
     QMenu *addMenu = menu->addMenu(QIcon(":/contextMenu/btn_add"), tr("addToList"));
     addMenu->addAction(tr("musicCloud"));
 
-    menu->addAction(QIcon(":/contextMenu/btn_mobile"), tr("songToMobile"), m_parentClass, SLOT(musicSongTransferWidget()));
-    menu->addAction(QIcon(":/contextMenu/btn_ring"), tr("ringToMobile"), m_parentClass, SLOT(musicSongTransferWidget()));
-    menu->addAction(QIcon(":/contextMenu/btn_similar"), tr("similar"), m_parentClass, SLOT(musicSimilarFoundWidgetPy()));
-    menu->addAction(QIcon(":/contextMenu/btn_share"), tr("songShare"), m_parentClass, SLOT(musicSongSharedWidgetPy()));
-    menu->addAction(QIcon(":/contextMenu/btn_kmicro"), tr("KMicro"), m_parentClass, SLOT(musicSongKMicroWidgetPy()));
+    menu->addAction(QIcon(":/contextMenu/btn_similar"), tr("similar"), m_parentClass, SLOT(musicPlayedSimilarFoundWidget()));
+    menu->addAction(QIcon(":/contextMenu/btn_share"), tr("songShare"), m_parentClass, SLOT(musicSongPlayedSharedWidget()));
 }
